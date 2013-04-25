@@ -2,6 +2,8 @@ Credit Card generator
 =============
 
 A node.js library for generating test credit card numbers.
+The card numbers are valid with respect to the Luhn algorithm (Mod 10 test).
+https://en.wikipedia.org/wiki/Luhn_algorithm
 
 Interface
 -----
