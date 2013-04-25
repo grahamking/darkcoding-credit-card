@@ -1,0 +1,20 @@
+{ "name" : "creditcard-generator",
+	"version" : "0.0.1",
+	"description" : "Can generate valid credit card numbers for VISA, Amex and Mastercard",
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/ExxKA/credit-card-generator"
+  },
+  "keywords": [
+    "credit card",
+    "card",
+    "credit",
+    "creditcard",
+    "mod10",
+    "grenerator",
+    "luhn",
+    "visa",
+    "amex",
+    "mastercard"
+  ]
+}
