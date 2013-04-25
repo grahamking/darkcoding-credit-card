@@ -14,7 +14,7 @@ GenCC([Scheme], [numberOfCards]);
 Usage
 -----
 ```js
-generator = require('./gencc.js')
+generator = require('creditcard-generator')
 generator.GenCC();
 //Will return 1 MasterCardNumber
 generator.GenCC("Amex");
