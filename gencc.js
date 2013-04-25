@@ -1,23 +1,3 @@
-/*
-Javascript credit card number generator
-Copyright (C) 2006-2012 Graham King graham@gkgk.org
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-www.darkcoding.net
-*/
 
 var visaPrefixList = new Array(
     "4539",
@@ -43,29 +23,6 @@ var amexPrefixList = new Array(
     "34",
     "37"
 );
-
-var discoverPrefixList = new Array("6011");
-
-var dinersPrefixList = new Array(
-    "300",
-    "301",
-    "302",
-    "303",
-    "36",
-    "38"
-);
-
-var enRoutePrefixList = new Array(
-    "2014",
-    "2149"
-);
-
-var jcbPrefixList = new Array(
-    "35"
-);
-
-var voyagerPrefixList = new Array("8699");
-
 
 function strrev(str) {
    if (!str) return '';
@@ -128,6 +85,7 @@ function completed_number(prefix, length) {
 
 }
 
+ 
 function credit_card_number(prefixList, length, howMany) {
 
     var result = new Array();
@@ -141,4 +99,19 @@ function credit_card_number(prefixList, length, howMany) {
     return result;
 }
 
-
+module.exports.Schemes = ["VISA", "Amex", "MasterCard"];
+module.exports.GenCC = function(CardScheme, howMany){
+    var amount = howMany || 1;
+    if(CardScheme == module.exports.Schemes[0]) //VISA
+    {
+        return credit_card_number(visaPrefixList, 16, amount)
+    }
+    else if(CardScheme == module.exports.Schemes[1]) //Amex
+    {
+        return credit_card_number(amexPrefixList, 15, amount)
+    }
+    else // MasterCard
+    {
+        return credit_card_number(mastercardPrefixList, 16, amount)
+    }
+}
