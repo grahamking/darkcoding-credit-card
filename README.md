@@ -8,8 +8,10 @@ https://en.wikipedia.org/wiki/Luhn_algorithm
 Interface
 -----
 ```js
-GenCC([Scheme], [numberOfCards]);
+GenCC([Scheme], [numberOfCards]. [pseduoRandomFunction]);
 ```
+pseduoRandomFunction must supply random numbers between 0 to 1.
+Use this in conjunction with a seeded random number generator to reproduce test data.
 
 Usage
 -----
@@ -21,6 +23,8 @@ generator.GenCC("Amex");
 //Will return 1 Amex number
 generator.GenCC("VISA", 10);
 //Will return 10 VisaCards numbers
+generator.GenCC("Mastercard", 3, Math.random)
+//Will generator 3 Mastercard numbers using the standard random function
 ```
 Contributing
 ------------

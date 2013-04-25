@@ -1,3 +1,4 @@
+var pseudoRandom = Math.random;
 
 var visaPrefixList = new Array(
     "4539",
@@ -43,7 +44,7 @@ function completed_number(prefix, length) {
     // generate digits
 
     while ( ccnumber.length < (length - 1) ) {
-        ccnumber += Math.floor(Math.random()*10);
+        ccnumber += Math.floor(pseudoRandom()*10);
     }
 
     // reverse number and convert to int
@@ -91,7 +92,7 @@ function credit_card_number(prefixList, length, howMany) {
     var result = new Array();
     for (var i = 0; i < howMany; i++) {
 
-        var randomArrayIndex = Math.floor(Math.random() * prefixList.length);
+        var randomArrayIndex = Math.floor(pseudoRandom() * prefixList.length);
         var ccnumber = prefixList[ randomArrayIndex ];
         result.push( completed_number(ccnumber, length) );
     }
@@ -100,7 +101,8 @@ function credit_card_number(prefixList, length, howMany) {
 }
 
 module.exports.Schemes = ["VISA", "Amex", "MasterCard"];
-module.exports.GenCC = function(CardScheme, howMany){
+module.exports.GenCC = function(CardScheme, howMany, randomGen){
+    pseudoRandom = randomGen || pseudoRandom;
     var amount = howMany || 1;
     if(CardScheme == module.exports.Schemes[0]) //VISA
     {
