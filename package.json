@@ -1,5 +1,5 @@
 { "name" : "creditcard-generator",
-	"version" : "0.0.4",
+	"version" : "0.0.5",
 	"description" : "Can generate valid credit card numbers for VISA, Amex and Mastercard",
 	"repository": {
     "type": "git",
