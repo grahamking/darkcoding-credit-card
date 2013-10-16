@@ -25,6 +25,11 @@ var amexPrefixList = new Array(
     "37"
 );
 
+/**
+ * Revert a String
+ * @param  {String} str
+ * @return {String}
+ */
 function strrev(str) {
    if (!str) return '';
    var revstr='';
@@ -33,10 +38,12 @@ function strrev(str) {
    return revstr;
 }
 
-/*
-'prefix' is the start of the CC number as a string, any number of digits.
-'length' is the length of the CC number to generate. Typically 13 or 16
-*/
+/**
+ * Complete a prefixed number-string
+ * @param  {String} prefix  is the start of the CC number as a string, any number of digits
+ * @param  {Number} length  is the length of the CC number to generate. Typically 13 or 16
+ * @return {String}
+ */
 function completed_number(prefix, length) {
 
     var ccnumber = prefix;
@@ -86,7 +93,13 @@ function completed_number(prefix, length) {
 
 }
 
- 
+/**
+ * Actually generate a credit card number
+ * @param  {[type]} prefixList [description]
+ * @param  {[type]} length     [description]
+ * @param  {[type]} howMany    [description]
+ * @return {[type]}            [description]
+ */
 function credit_card_number(prefixList, length, howMany) {
 
     var result = new Array();
@@ -100,7 +113,19 @@ function credit_card_number(prefixList, length, howMany) {
     return result;
 }
 
+/**
+ * Supported Card Schemes
+ * @type {Array}
+ */
 module.exports.Schemes = ["VISA", "Amex", "MasterCard"];
+
+/**
+ * The entry-point function
+ * @param {String} CardScheme  The Card Scheme
+ * @param {Number} [howMany]   Defaults to 1
+ * @param {Number} [randomGen] Pseudo Random Generator. Must generate a random number between 0 an 1
+ * @return {String}
+ */
 module.exports.GenCC = function(CardScheme, howMany, randomGen){
     pseudoRandom = randomGen || pseudoRandom;
     var amount = howMany || 1;

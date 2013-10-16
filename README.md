@@ -8,9 +8,9 @@ https://en.wikipedia.org/wiki/Luhn_algorithm
 Interface
 -----
 ```js
-GenCC([Scheme], [numberOfCards]. [pseduoRandomFunction]);
+GenCC([Scheme], [numberOfCards]. [pseudoRandomFunction]);
 ```
-pseduoRandomFunction must supply random numbers between 0 to 1.
+pseudoRandomFunction must supply random numbers between 0 to 1.
 Use this in conjunction with a seeded random number generator to reproduce test data.
 
 Usage
