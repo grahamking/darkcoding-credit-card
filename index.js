@@ -25,6 +25,28 @@ var amexPrefixList = new Array(
     "37"
 );
 
+var discoverPrefixList = new Array("6011");
+
+var dinersPrefixList = new Array(
+    "300",
+    "301",
+    "302",
+    "303",
+    "36",
+    "38"
+);
+
+var enRoutePrefixList = new Array(
+    "2014",
+    "2149"
+);
+
+var jcbPrefixList = new Array(
+    "35"
+);
+
+var voyagerPrefixList = new Array("8699");
+
 /**
  * Revert a String
  * @param  {String} str
@@ -117,7 +139,40 @@ function credit_card_number(prefixList, length, howMany) {
  * Supported Card Schemes
  * @type {Array}
  */
-module.exports.Schemes = ["VISA", "Amex", "MasterCard"];
+module.exports.Schemes = {
+    "VISA": {
+        prefixList: visaPrefixList,
+        digitCount: 16
+    },
+    "MasterCard": {
+        prefixList: mastercardPrefixList,
+        digitCount: 16
+    },
+    "Amex": {
+        prefixList: amexPrefixList,
+        digitCount: 15
+    },
+    "Diners": {
+        prefixList: dinersPrefixList,
+        digitCount: 16
+    },
+    "Discover": {
+        prefixList: discoverPrefixList,
+        digitCount: 16
+    },
+    "EnRoute": {
+        prefixList: enRoutePrefixList,
+        digitCount: 16
+    },
+    "JCB": {
+        prefixList: jcbPrefixList,
+        digitCount: 16
+    },
+    "Voyager": {
+        prefixList: voyagerPrefixList,
+        digitCount: 16
+    }
+}
 
 /**
  * The entry-point function
@@ -129,16 +184,19 @@ module.exports.Schemes = ["VISA", "Amex", "MasterCard"];
 module.exports.GenCC = function(CardScheme, howMany, randomGen){
     pseudoRandom = randomGen || pseudoRandom;
     var amount = howMany || 1;
-    if(CardScheme == module.exports.Schemes[0]) //VISA
-    {
-        return credit_card_number(visaPrefixList, 16, amount)
+    // Try to get configs to the selected Scheme
+    if (typeof module.exports.Schemes[CardScheme] != 'undefined') {
+        return credit_card_number(
+            module.exports.Schemes[CardScheme].prefixList,
+            module.exports.Schemes[CardScheme].digitCount,
+            amount
+        );
     }
-    else if(CardScheme == module.exports.Schemes[1]) //Amex
-    {
-        return credit_card_number(amexPrefixList, 15, amount)
-    }
-    else // MasterCard
-    {
-        return credit_card_number(mastercardPrefixList, 16, amount)
+    else { // Defaults to MasterCard
+        return credit_card_number(
+            module.exports.Schemes["MasterCard"].prefixList,
+            module.exports.Schemes["MasterCard"].digitCount,
+            amount
+        );
     }
 }
