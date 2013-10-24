@@ -25,6 +25,33 @@ var amexPrefixList = new Array(
     "37"
 );
 
+var discoverPrefixList = new Array("6011");
+
+var dinersPrefixList = new Array(
+    "300",
+    "301",
+    "302",
+    "303",
+    "36",
+    "38"
+);
+
+var enRoutePrefixList = new Array(
+    "2014",
+    "2149"
+);
+
+var jcbPrefixList = new Array(
+    "35"
+);
+
+var voyagerPrefixList = new Array("8699");
+
+/**
+ * Revert a String
+ * @param  {String} str
+ * @return {String}
+ */
 function strrev(str) {
    if (!str) return '';
    var revstr='';
@@ -33,10 +60,12 @@ function strrev(str) {
    return revstr;
 }
 
-/*
-'prefix' is the start of the CC number as a string, any number of digits.
-'length' is the length of the CC number to generate. Typically 13 or 16
-*/
+/**
+ * Complete a prefixed number-string
+ * @param  {String} prefix  is the start of the CC number as a string, any number of digits
+ * @param  {Number} length  is the length of the CC number to generate. Typically 13 or 16
+ * @return {String}
+ */
 function completed_number(prefix, length) {
 
     var ccnumber = prefix;
@@ -86,7 +115,13 @@ function completed_number(prefix, length) {
 
 }
 
- 
+/**
+ * Actually generate a credit card number
+ * @param  {[type]} prefixList [description]
+ * @param  {[type]} length     [description]
+ * @param  {[type]} howMany    [description]
+ * @return {[type]}            [description]
+ */
 function credit_card_number(prefixList, length, howMany) {
 
     var result = new Array();
@@ -100,20 +135,68 @@ function credit_card_number(prefixList, length, howMany) {
     return result;
 }
 
-module.exports.Schemes = ["VISA", "Amex", "MasterCard"];
+/**
+ * Supported Card Schemes
+ * @type {Array}
+ */
+module.exports.Schemes = {
+    "VISA": {
+        prefixList: visaPrefixList,
+        digitCount: 16
+    },
+    "MasterCard": {
+        prefixList: mastercardPrefixList,
+        digitCount: 16
+    },
+    "Amex": {
+        prefixList: amexPrefixList,
+        digitCount: 15
+    },
+    "Diners": {
+        prefixList: dinersPrefixList,
+        digitCount: 16
+    },
+    "Discover": {
+        prefixList: discoverPrefixList,
+        digitCount: 16
+    },
+    "EnRoute": {
+        prefixList: enRoutePrefixList,
+        digitCount: 16
+    },
+    "JCB": {
+        prefixList: jcbPrefixList,
+        digitCount: 16
+    },
+    "Voyager": {
+        prefixList: voyagerPrefixList,
+        digitCount: 16
+    }
+}
+
+/**
+ * The entry-point function
+ * @param {String} CardScheme  The Card Scheme
+ * @param {Number} [howMany]   Defaults to 1
+ * @param {Number} [randomGen] Pseudo Random Generator. Must generate a random number between 0 an 1
+ * @return {String}
+ */
 module.exports.GenCC = function(CardScheme, howMany, randomGen){
     pseudoRandom = randomGen || pseudoRandom;
     var amount = howMany || 1;
-    if(CardScheme == module.exports.Schemes[0]) //VISA
-    {
-        return credit_card_number(visaPrefixList, 16, amount)
+    // Try to get configs to the selected Scheme
+    if (typeof module.exports.Schemes[CardScheme] != 'undefined') {
+        return credit_card_number(
+            module.exports.Schemes[CardScheme].prefixList,
+            module.exports.Schemes[CardScheme].digitCount,
+            amount
+        );
     }
-    else if(CardScheme == module.exports.Schemes[1]) //Amex
-    {
-        return credit_card_number(amexPrefixList, 15, amount)
-    }
-    else // MasterCard
-    {
-        return credit_card_number(mastercardPrefixList, 16, amount)
+    else { // Defaults to MasterCard
+        return credit_card_number(
+            module.exports.Schemes["MasterCard"].prefixList,
+            module.exports.Schemes["MasterCard"].digitCount,
+            amount
+        );
     }
 }
