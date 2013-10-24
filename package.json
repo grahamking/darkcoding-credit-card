@@ -1,6 +1,6 @@
 { "name" : "creditcard-generator",
-	"version" : "0.0.5",
-	"description" : "Can generate valid credit card numbers for VISA, Amex and Mastercard",
+	"version" : "0.0.6",
+	"description" : "Can generate valid credit card numbers for VISA, Amex, Mastercard, Diners, Discover, EnRoute, JCB, Voyager",
 	"repository": {
     "type": "git",
     "url": "https://github.com/ExxKA/credit-card-generator"
@@ -15,6 +15,11 @@
     "luhn",
     "visa",
     "amex",
-    "mastercard"
+    "mastercard",
+    "diners",
+    "discover",
+    "enroute",
+    "jcb",
+    "voyager"
   ]
 }
