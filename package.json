@@ -3,7 +3,7 @@
 	"description" : "Can generate valid credit card numbers for VISA, Amex, Mastercard, Diners, Discover, EnRoute, JCB, Voyager",
 	"repository": {
     "type": "git",
-    "url": "https://github.com/ExxKA/credit-card-generator"
+    "url": "https://github.com/VRMink/credit-card-generator"
   },
   "keywords": [
     "credit card",
