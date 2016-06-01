@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
  
 namespace CreditCardNumberGenerator
 {
-    public class RandomCreditCardNumberGenerator
+    public static class RandomCreditCardNumberGenerator
     {
         /*
          Copy Kev Hunter's changes August 16, 2009 from from https://kevhunter.wordpress.com/2009/08/16/creating-fake-credit-card-numbers/
-         Included comments from Zoltan siaynoq(http://en.gravatar.com/siaynoq) April 20, 2011 
-         Included in GitHub by Michael Freidgeim 31 May 2016.
+         Include comments from Zoltan siaynoq(http://en.gravatar.com/siaynoq) April 20, 2011 
+         Included in GitHub by MNF 31 May 2016.
+         MNF 31 May 2016 Added PrefixAndLength struct and methods to generate random numbers of different types in the same call to GetCreditCardNumbers
+
         This is a port of the port of of the Javascript credit card number generator now in C#
         * by Kev Hunter https://kevhunter.wordpress.com
         * See the license below. Obviously, this is not a Javascript credit card number
@@ -34,8 +35,12 @@ namespace CreditCardNumberGenerator
          51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
          www.darkcoding.net
         */
- 
- 
+/*
+Example of use:
+    var random = new Random();
+    var cardsList = random.GetCreditCardNumbers(RandomCreditCardNumberGenerator.BuildPrefixAndLengthArrayForVisaMasterCardAmex(), 10);
+*/
+
         public static string[] AMEX_PREFIX_LIST = new[] {"34", "37"};
  
  
@@ -76,21 +81,74 @@ namespace CreditCardNumberGenerator
  
  
         public static string[] VOYAGER_PREFIX_LIST = new[] {"8699"};
- 
+
+        public struct PrefixAndLength
+        {
+            public PrefixAndLength(string prefix, int length)
+            {
+                Prefix = prefix;
+                Length = length;
+            }
+            public string Prefix { get; set; }
+            public int Length { get; set; }
+        }
+
+        public static IEnumerable<PrefixAndLength> BuildPrefixAndLengthList(string[] prefixList, int length)
+        {
+            var list=from p in prefixList select new PrefixAndLength(p, length);
+            return list;
+        }
+        /// <summary>
+        /// This is an example how BuildPrefixAndLengthList can be used
+        /// </summary>
+        /// <returns></returns>
+        public static PrefixAndLength[] BuildPrefixAndLengthArrayForVisaMasterCardAmex()
+        {
+            var list=BuildPrefixAndLengthList(VISA_PREFIX_LIST, 16)
+                .Union(BuildPrefixAndLengthList(MASTERCARD_PREFIX_LIST, 16))
+                .Union(BuildPrefixAndLengthList(AMEX_PREFIX_LIST, 15))
+                 ;
+            return list.ToArray();
+        }
+        /// <summary>
+        /// Better to use extension overload with [this Random random] paramenter. See http://stackoverflow.com/questions/2706500/how-do-i-generate-a-random-int-number-in-c
+        /// </summary>
+        /// <param name="prefixAndLengthList"></param>
+        /// <param name="howMany"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> GetCreditCardNumbers(PrefixAndLength[] prefixAndLengthList,
+                                                         int howMany)
+        {
+            Random rndGen = new Random();
+            return GetCreditCardNumbers(rndGen, prefixAndLengthList, howMany);
+        }
+
+        public static IEnumerable<string> GetCreditCardNumbers(this Random random, PrefixAndLength[] prefixAndLengthList, int howMany)
+        {
+            var result = new Stack<string>();
+            for (int i = 0; i < howMany; i++)
+            {
+                int randomPrefix = random.Next(0, prefixAndLengthList.Length - 1);
+
+                var prefixAndLength = prefixAndLengthList[randomPrefix];
+
+                result.Push(CreateFakeCreditCardNumber(random, prefixAndLength.Prefix, prefixAndLength.Length));
+            }
+
+            return result;
+        }
+
         /*
       'prefix' is the start of the  CC number as a string, any number
         private of digits   'length' is the length of the CC number to generate.
      * Typically 13 or  16
         */
-        private static string CreateFakeCreditCardNumber(string prefix, int length)
+        private static string CreateFakeCreditCardNumber(this Random random, string prefix, int length)
         {
-           //sleep so we get a different seed  if called multiple times
-           Thread.Sleep(20);//Todo: consider to make rndGen single instance for all calls see http://stackoverflow.com/questions/767999/random-number-generator-only-generating-one-random-number
             string ccnumber = prefix;
-            Random rndGen = new Random();
             while (ccnumber.Length < (length - 1))
             {
-                double rnd = (rndGen.NextDouble()*1.0f - 0f);
+                double rnd = (random.NextDouble()*1.0f - 0f);
  
                 ccnumber += Math.Floor(rnd*10);
             }
@@ -100,9 +158,8 @@ namespace CreditCardNumberGenerator
          var reversedCCnumberstring = ccnumber.ToCharArray().Reverse();
  
             var reversedCCnumberList = reversedCCnumberstring.Select(c => Convert.ToInt32(c.ToString()));
- 
-            // calculate sum
- 
+
+            // calculate sum //Luhn Algorithm http://en.wikipedia.org/wiki/Luhn_algorithm
             int sum = 0;
             int pos = 0;
             int[] reversedCCnumber = reversedCCnumberList.ToArray();
@@ -130,25 +187,25 @@ namespace CreditCardNumberGenerator
  
             return ccnumber;
         }
- 
- 
+
+  
         public static IEnumerable<string> GetCreditCardNumbers(string[] prefixList, int length,
                                                   int howMany)
         {
             var result = new Stack<string>();
- 
+            var random = new Random();
             for (int i = 0; i < howMany; i++)
             {
-                int randomPrefix = new Random().Next(0, prefixList.Length - 1);
+                int randomPrefix = random.Next(0, prefixList.Length - 1);
      
-                if(randomPrefix>1)
+                if(randomPrefix>1)  //Why??, is it a bug ? it never will select last element
                 {
                     randomPrefix--;
                 }
  
                 string ccnumber = prefixList[randomPrefix];
  
-                result.Push(CreateFakeCreditCardNumber(ccnumber, length));
+                result.Push(CreateFakeCreditCardNumber(random, ccnumber, length));
             }
  
             return result;
