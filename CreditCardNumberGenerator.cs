@@ -7,7 +7,11 @@ namespace CreditCardNumberGenerator
 {
     public class RandomCreditCardNumberGenerator
     {
-        /*This is a port of the port of of the Javascript credit card number generator now in C#
+        /*
+         Copy Kev Hunter's changes August 16, 2009 from from https://kevhunter.wordpress.com/2009/08/16/creating-fake-credit-card-numbers/
+         Included comments from Zoltan siaynoq(http://en.gravatar.com/siaynoq) April 20, 2011 
+         Included in GitHub by Michael Freidgeim 31 May 2016.
+        This is a port of the port of of the Javascript credit card number generator now in C#
         * by Kev Hunter https://kevhunter.wordpress.com
         * See the license below. Obviously, this is not a Javascript credit card number
          generator. However, The following class is a port of a Javascript credit card
@@ -15,6 +19,7 @@ namespace CreditCardNumberGenerator
          @author robweber
          Javascript credit card number generator Copyright (C) 2006 Graham King
          graham@darkcoding.net
+
          This program is free software; you can redistribute it and/or modify it
          under the terms of the GNU General Public License as published by the
          Free Software Foundation; either version 2 of the License, or (at your
@@ -79,17 +84,15 @@ namespace CreditCardNumberGenerator
         */
         private static string CreateFakeCreditCardNumber(string prefix, int length)
         {
+           //sleep so we get a different seed  if called multiple times
+           Thread.Sleep(20);//Todo: consider to make rndGen single instance for all calls see http://stackoverflow.com/questions/767999/random-number-generator-only-generating-one-random-number
             string ccnumber = prefix;
- 
+            Random rndGen = new Random();
             while (ccnumber.Length < (length - 1))
             {
-                double rnd = (new Random().NextDouble()*1.0f - 0f);
+                double rnd = (rndGen.NextDouble()*1.0f - 0f);
  
                 ccnumber += Math.Floor(rnd*10);
- 
-                //sleep so we get a different seed
- 
-                Thread.Sleep(20);
             }
  
  
