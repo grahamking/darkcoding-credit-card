@@ -4,14 +4,14 @@
 //
 //  Created by Ethan Arbuckle on 7/4/13.
 //  Copyright (c) 2013 Ethan Arbuckle. All rights reserved.
-// 
+//
 
 #import "EACreditCardNumberGenerator.h"
 
 @implementation EACreditCardNumberGenerator
 
 - (NSArray*)generateMasterCardNumbers_Count:(int)howMany {
-    NSArray *masterCardPrefixes = [[NSArray alloc] initWithObjects:@"51", @"52", @"53", @"54", @"55", nil];
+    NSArray *masterCardPrefixes = [[NSArray alloc] initWithObjects:@"51", @"52", @"53", @"54", @"55", @"2221", @"2222", @"2223", @"2224", @"2225", @"2226", @"2227", @"2228", @"2229", @"223", @"224", @"225", @"226", @"227", @"228", @"229", @"23", @"24", @"25", @"26", @"270", @"271", @"2720", nil];
     return [self credit_card_number:masterCardPrefixes :16 :howMany];
 }
 

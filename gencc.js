@@ -36,7 +36,30 @@ var mastercardPrefixList = new Array(
     "52",
     "53",
     "54",
-    "55"
+    "55",
+    "2221",
+    "2222",
+    "2223",
+    "2224",
+    "2225",
+    "2226",
+    "2227",
+    "2228",
+    "2229",
+    "223",
+    "224",
+    "225",
+    "226",
+    "227",
+    "228",
+    "229",
+    "23",
+    "24",
+    "25",
+    "26",
+    "270",
+    "271",
+    "2720"
 );
 
 var amexPrefixList = new Array(
@@ -140,5 +163,3 @@ function credit_card_number(prefixList, length, howMany) {
 
     return result;
 }
-
-

@@ -5,7 +5,7 @@
 <body>
 <h3>VISA:</h3>
 <script>
-var visa = credit_card_number(visaPrefixList, 16, 3); 
+var visa = credit_card_number(visaPrefixList, 16, 3);
 document.write( visa );
 </script>
 <h3>Amex:</h3>
@@ -13,7 +13,11 @@ document.write( visa );
 var amex = credit_card_number(amexPrefixList, 15, 3);
 document.write( amex );
 </script>
+<h3>Mastercard:</h3>
+<script>
+var mastercard = credit_card_number(mastercardPrefixList, 16, 3);
+document.write( mastercard );
+</script>
 
 </body>
 </html>
-
