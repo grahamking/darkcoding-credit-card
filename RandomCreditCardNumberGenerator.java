@@ -35,7 +35,7 @@ public class RandomCreditCardNumberGenerator {
 			"4556", "4916", "4532", "4929", "40240071", "4485", "4716", "4" };
 
 	public static final String[] MASTERCARD_PREFIX_LIST = new String[] { "51",
-			"52", "53", "54", "55" };
+			"52", "53", "54", "55", "2221", "2222", "2223", "2224", "2225", "2226", "2227", "2228", "2229", "223", "224", "225", "226", "227", "228", "229", "23", "24", "25", "26", "270", "271", "2720" };
 
 	public static final String[] AMEX_PREFIX_LIST = new String[] { "34", "37" };
 
